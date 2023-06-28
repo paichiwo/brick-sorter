@@ -1,4 +1,7 @@
-/catalog.json
-
+# PyCharm
 /venv
 /.idea
+/__pycache__
+# Project
+/catalog.json
+/api.txt
