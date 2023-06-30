@@ -71,7 +71,7 @@ def update_window():
             part_img_url, part_number, part_name, part_url = rebrickable_api(search_term)
 
             image = create_part_image(part_img_url)
-            part_drawing_label.configure(image=image)
+            part_drawing_label.configure(image=image, bg=colors[1])
             part_drawing_label.image = image
 
             part_number_label.configure(text=part_number)
@@ -90,7 +90,14 @@ def update_window():
 
 
 def add_to_catalog():
-    pass
+    """Add lego part with the box number to the catalog."""
+    part_number = search_entry.get()
+    box_number = box_entry.get()
+    catalog[part_number] = box_number
+    save_catalog()
+
+
+
 
 
 def save_catalog():
@@ -204,7 +211,8 @@ add_button_image = PhotoImage(file=resource_path('images/ADD_button.png'))
 add_button = Button(image=add_button_image, 
                     bg=colors[1], 
                     activebackground=colors[1], 
-                    borderwidth=0)
+                    borderwidth=0,
+                    command=add_to_catalog)
 add_button.place(x=231, y=326)
 
 delete_button_image = PhotoImage(file=resource_path('images/DELETE_button.png'))
