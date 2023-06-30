@@ -23,9 +23,10 @@ def resource_path(relative_path):
 
 
 def get_api_key():
-    """Read API key from file."""
+    """Return an API key from the file."""
     with open(resource_path('./keys/api.txt')) as f:
         key = f.read()
+
     return key
 
 
@@ -98,20 +99,23 @@ def add_to_catalog():
     part_number = part_number_variable.get()
     box_number = box_entry.get()
     if box_number and part_number != "Part number":
-        catalog[part_number] = box_number
-        box_label.configure(text=f"BOX: {box_number}")
-        save_catalog()
+        if not catalog[part_number]:
+            catalog[part_number] = box_number.upper()
+            box_label.configure(text=f"BOX: {catalog[part_number]}")
+            save_catalog()
+        else:
+            message_label.configure(text="Item already exist in the collection.")
     else:
-        message_label.configure(text="Enter box number.")
+        message_label.configure(text="Enter box number or search for a part.")
 
 
 def delete_from_catalog():
     """Delete lego part from the catalog."""
     part_number = part_number_variable.get()
-    if part_number:
+    if part_number != "Part number":
         if messagebox.askyesno("Warning", message="Are you sure ?"):
             del catalog[part_number]
-            box_label.configure(text="NOT IN COLLECTION")
+            box_label.configure(text="NOT IN COLLECTION", fg=colors[0])
             save_catalog()
         else:
             message_label.configure(text="No changes made.")
@@ -166,12 +170,12 @@ app_name = Label(text="BRICK SORTER",
 app_name.place(x=140, y=0)
 
 search_entry = Entry(justify='center',
-                     font=('Manrope', 14),
+                     font=('Manrope', 14, 'bold'),
                      bg=colors[0],
                      fg=colors[5],
                      borderwidth=0,
                      width=12)
-search_entry.place(x=200, y=57, height=25)
+search_entry.place(x=190, y=57, height=25)
 search_entry.bind('<Return>', lambda event=None: search_button.invoke())
 search_entry.focus()
 
@@ -212,7 +216,7 @@ bricklink_button = Button(text="Bricklink",
                           activeforeground=colors[5])
 bricklink_button.place(x=21, y=260, width=500)
 
-box_label = Label(text="BOX: _",
+box_label = Label(text="",
                   justify='center',
                   font=('Manrope ExtraBold', 13),
                   bg=colors[1],
@@ -243,10 +247,10 @@ delete_button = Button(image=delete_button_image,
                        command=delete_from_catalog)
 delete_button.place(x=323, y=326)
 
-message_label = Label(text="test", 
-                      font=("Manrope", 10, 'bold'), 
+message_label = Label(text="",
+                      font=("Manrope", 10),
                       bg=colors[1], 
-                      fg=colors[0])
+                      fg=colors[4])
 message_label.place(x=10, y=374)
 
 root.mainloop()
