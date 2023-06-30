@@ -7,12 +7,11 @@ from urllib.request import urlopen
 from rembg import remove
 from PIL import Image as img
 from PIL import ImageTk as imgtk
-from tkinter import *
-from tkinter import messagebox, Label, PhotoImage, Entry
+from tkinter import Tk, Button, Label, PhotoImage, Entry
 
 import requests
 
-colors = ["#D7263D", "#02182B", "#0197F6", "#448FA3", "#68C5DB", "#FFFFFF"]
+colors = ['#D7263D', '#02182B', '#0197F6', '#448FA3', '#68C5DB', '#FFFFFF']
 catalog = {}
 
 
@@ -25,7 +24,7 @@ def resource_path(relative_path):
 
 def get_api_key():
     """Read API key from file."""
-    with open("api.txt") as f:
+    with open(resource_path('./keys/api.txt')) as f:
         key = f.read()
     return key
 
@@ -33,15 +32,15 @@ def get_api_key():
 def rebrickable_api(part_num):
     """Get lego part information from rebrickable.com."""
     key = get_api_key()
-    url = f"https://rebrickable.com/api/v3/lego/parts/{part_num}/?key={key}"
+    url = f'https://rebrickable.com/api/v3/lego/parts/{part_num}/?key={key}'
     lego_data = requests.get(url).json()
 
-    part_img_url = lego_data["part_img_url"]
-    part_number = lego_data["part_num"]
-    part_name = lego_data["name"]
+    part_img_url = lego_data['part_img_url']
+    part_number = lego_data['part_num']
+    part_name = lego_data['name']
 
-    bricklink_id = lego_data["external_ids"]["BrickLink"][0]
-    part_url = f"https://www.bricklink.com/v2/catalog/catalogitem.page?P={bricklink_id}#T=C"
+    bricklink_id = lego_data['external_ids']['BrickLink'][0]
+    part_url = f'https://www.bricklink.com/v2/catalog/catalogitem.page?P={bricklink_id}#T=C'
 
     return part_img_url, part_number, part_name, part_url
 
@@ -90,7 +89,7 @@ def save_catalog():
     """Save catalog to .json file."""
     with open('catalog.json', 'w') as file:
         json.dump(catalog, file)
-    messagebox.showinfo("Success", "Catalog saved.")
+    message_label.configure(text="Success. Catalog saved.")
 
 
 def load_catalog():
@@ -103,7 +102,7 @@ def load_catalog():
         catalog = {}
 
 
-# Create a window and widgets
+# Create the window and widgets
 root = Tk()
 root.title("Lego Sorter")
 root.resizable(False, False)
@@ -119,15 +118,15 @@ screen_height = root.winfo_screenheight()
 x = (screen_width // 2) - (window_width // 2)
 y = (screen_height // 2) - (window_height // 2)
 # Set the window's position
-root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+root.geometry(f'{window_width}x{window_height}+{x}+{y}')
 
-background_image = PhotoImage(file=resource_path("images/background.png"))
+background_image = PhotoImage(file=resource_path('./images/background.png'))
 background_label = Label(image=background_image,
                          borderwidth=0)
 background_label.pack()
 
 app_name = Label(text="BRICK SORTER",
-                 font=("Manrope ExtraBold", 27),
+                 font=('Manrope ExtraBold', 27),
                  bg=colors[1],
                  fg=colors[0])
 app_name.place(x=140, y=0)
@@ -139,9 +138,10 @@ search_entry = Entry(justify='center',
                      borderwidth=0,
                      width=12)
 search_entry.place(x=200, y=57, height=25)
+search_entry.bind('<Return>', lambda event=None: search_button.invoke())
 search_entry.focus()
 
-search_button_image = PhotoImage(file=resource_path("images/SEARCH button.png"))
+search_button_image = PhotoImage(file=resource_path('images/SEARCH_button.png'))
 search_button = Button(image=search_button_image,
                        bg=colors[0],
                        activebackground=colors[0],
@@ -149,28 +149,28 @@ search_button = Button(image=search_button_image,
                        command=update_window)
 search_button.place(x=370, y=58)
 
-part_drawing_image = PhotoImage(file=resource_path("images/lego.png"))
+part_drawing_image = PhotoImage(file=resource_path('./images/lego.png'))
 part_drawing_label = Label(image=part_drawing_image,
                            borderwidth=0)
 part_drawing_label.place(x=220, y=100)
 
 part_number_label = Label(text="Part number",
-                          justify="center",
-                          font=("Manrope", 11, 'bold'),
+                          justify='center',
+                          font=('Manrope', 11, 'bold'),
                           bg=colors[1],
                           fg=colors[5])
 part_number_label.place(x=21, y=210, width=500)
 
 part_name_label = Label(text="Part name",
-                        justify="center",
-                        font=("Manrope", 11, 'bold'),
+                        justify='center',
+                        font=('Manrope', 11, 'bold'),
                         bg=colors[1],
                         fg=colors[5])
 part_name_label.place(x=21, y=235, width=500)
 
 bricklink_button = Button(text="Bricklink",
                           borderwidth=0,
-                          font=("Manrope", 10, 'bold', 'underline'),
+                          font=('Manrope', 10, 'bold', 'underline'),
                           bg=colors[1],
                           fg=colors[5],
                           activebackground=colors[1],
@@ -178,8 +178,8 @@ bricklink_button = Button(text="Bricklink",
 bricklink_button.place(x=21, y=260, width=500)
 
 box_label = Label(text="BOX: _",
-                  justify="center",
-                  font=("Manrope ExtraBold", 13),
+                  justify='center',
+                  font=('Manrope ExtraBold', 13),
                   bg=colors[1],
                   fg=colors[0])
 box_label.place(x=121, y=290, width=300)
@@ -192,14 +192,14 @@ box_entry = Entry(justify='center',
                   width=4)
 box_entry.place(x=158, y=329)
 
-add_button_image = PhotoImage(file=resource_path("images/ADD button.png"))
+add_button_image = PhotoImage(file=resource_path('images/ADD_button.png'))
 add_button = Button(image=add_button_image, 
                     bg=colors[1], 
                     activebackground=colors[1], 
                     borderwidth=0)
 add_button.place(x=231, y=326)
 
-delete_button_image = PhotoImage(file=resource_path("images/DELETE button.png"))
+delete_button_image = PhotoImage(file=resource_path('images/DELETE_button.png'))
 delete_button = Button(image=delete_button_image, 
                        bg=colors[1], 
                        activebackground=colors[1],
