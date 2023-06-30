@@ -30,20 +30,27 @@ def rebrickable_api(part_num):
     url = f"https://rebrickable.com/api/v3/lego/parts/{part_num}/?key={key}"
     lego_data = requests.get(url).json()
 
+    part_img_url = lego_data["part_img_url"]
     part_number = lego_data["part_num"]
     part_name = lego_data["name"]
-    year = (lego_data["year_from"], lego_data["year_to"])
-    part_img_url = lego_data["part_img_url"]
 
     bricklink_id = lego_data["external_ids"]["BrickLink"][0]
     part_url = f"https://www.bricklink.com/v2/catalog/catalogitem.page?P={bricklink_id}#T=C"
 
-    return part_number, part_name, year, part_img_url, part_url
+    return part_img_url, part_number, part_name, part_url
 
 
 def update_window():
-    search_term = entry_box.get()
-    print(rebrickable_api(search_term))
+
+    load_catalog()
+
+    search_term = search_entry.get()
+
+    if search_term in catalog:
+        box = catalog[search_term]
+        box_label.configure(text=f"BOX: {box}")
+    else:
+        box_label.configure(text="NOT IN COLLECTION", fg=colors[0])
 
 
 def add_to_catalog():
@@ -65,7 +72,6 @@ def load_catalog():
         catalog = {}
 
 
-
 # Create a window and widgets
 root = Tk()
 root.title("Lego Sorter")
@@ -85,17 +91,17 @@ y = (screen_height // 2) - (window_height // 2)
 root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
 background_image = PhotoImage(file=resource_path("images/background.png"))
-background_label = Label(root, image=background_image, borderwidth=0)
+background_label = Label(image=background_image, borderwidth=0)
 background_label.pack()
 
 app_name = Label(text="BRICK SORTER", font=("Manrope ExtraBold", 27), bg=colors[1], fg=colors[0])
 app_name.place(x=140, y=0)
 
-entry_box = Entry(root, justify='center', width=12, font=('Manrope', 14),
+search_entry = Entry(justify='center', width=12, font=('Manrope', 14),
                   bg=colors[0], border=0, fg='white')
-entry_box.pack()
-entry_box.place(x=200, y=57, height=25)
-entry_box.focus()
+search_entry.pack()
+search_entry.place(x=200, y=57, height=25)
+search_entry.focus()
 
 search_button_image = PhotoImage(file=resource_path("images/SEARCH button.png"))
 search_button = Button(image=search_button_image, borderwidth=0, bg=colors[0], activebackground=colors[0],
@@ -112,22 +118,26 @@ part_number_label.place(x=121, y=209, width=300)
 part_name_label = Label(text="Plate 2x2", justify="center", font=("Manrope", 10, 'bold'), bg=colors[1], fg='white', height=1)
 part_name_label.place(x=121, y=229, width=300)
 
-part_year_label = Label(text="(1982, 2023)", justify="center", font=("Manrope", 10, 'bold'), bg=colors[1], fg='white', height=1)
-part_year_label.place(x=121, y=249, width=300)
-
-part_year_label = Label(text="Bricklink", justify="center", font=("Manrope", 10, 'bold'), bg=colors[1], fg='white', height=1)
-part_year_label.place(x=121, y=269, width=300)
+bricklink_label = Label(text="Bricklink", justify="center", font=("Manrope", 10, 'bold'), bg=colors[1], fg='white', height=1)
+bricklink_label.place(x=121, y=269, width=300)
 
 box_label = Label(text="BOX: A", justify="center", font=("Manrope ExtraBold", 11), bg=colors[1], fg='white', height=1)
 box_label.place(x=121, y=300, width=300)
 
+box_entry = Entry(justify='center', width=4, font=('Manrope', 12, 'bold'),
+                  bg=colors[0], border=0, fg='white')
+box_entry.place(x=158, y=329)
+
 add_button_image = PhotoImage(file=resource_path("images/ADD button.png"))
 add_button = Button(image=add_button_image, borderwidth=0, bg=colors[1], activebackground=colors[1])
-add_button.place(x=143, y=323)
+add_button.place(x=231, y=326)
 
 delete_button_image = PhotoImage(file=resource_path("images/DELETE button.png"))
 delete_button = Button(image=delete_button_image, borderwidth=0, bg=colors[1], activebackground=colors[1])
-delete_button.place(x=323, y=323)
+delete_button.place(x=323, y=326)
+
+message_label = Label(text="test", font=("Manrope", 10, 'bold'), bg=colors[1], fg=colors[0])
+message_label.place(x=10, y=374)
 
 root.mainloop()
 
