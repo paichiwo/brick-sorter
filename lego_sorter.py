@@ -7,7 +7,7 @@ from urllib.request import urlopen
 from rembg import remove
 from PIL import Image as img
 from PIL import ImageTk as imgtk
-from tkinter import Tk, Button, Label, PhotoImage, Entry
+from tkinter import Tk, Button, Label, PhotoImage, Entry, messagebox, StringVar
 
 import requests
 
@@ -30,7 +30,7 @@ def get_api_key():
 
 
 def rebrickable_api(part_num):
-    """Get lego part information from rebrickable.com API."""
+    """Return lego part information from rebrickable.com API."""
     key = get_api_key()
     url = f'https://rebrickable.com/api/v3/lego/parts/{part_num}/?key={key}'
     if requests.get(url).status_code == 200:
@@ -47,7 +47,7 @@ def rebrickable_api(part_num):
 
 
 def create_part_image(link):
-    """Create tkinter image from URL, remove background and resize to 100x100 pixels."""
+    """Return tkinter image from URL, remove background and resize to 100x100 pixels."""
     u = urlopen(link)
     raw_data = u.read()
     u.close()
@@ -64,8 +64,11 @@ def create_part_image(link):
 
 def update_window():
     """Update an application window."""
-    load_catalog()
+
+    global part_number_variable
     search_term = search_entry.get()
+    load_catalog()
+
     if search_term:
         try:
             part_img_url, part_number, part_name, part_url = rebrickable_api(search_term)
@@ -74,7 +77,8 @@ def update_window():
             part_drawing_label.configure(image=image, bg=colors[1])
             part_drawing_label.image = image
 
-            part_number_label.configure(text=part_number)
+            part_number_variable = StringVar(root, part_number)
+            part_number_label.configure(textvariable=part_number_variable)
             part_name_label.configure(text=part_name)
             bricklink_button.configure(command=lambda: webbrowser.open(part_url))
             message_label.configure(text="")
@@ -91,13 +95,28 @@ def update_window():
 
 def add_to_catalog():
     """Add lego part with the box number to the catalog."""
-    part_number = search_entry.get()
+    part_number = part_number_variable.get()
     box_number = box_entry.get()
-    catalog[part_number] = box_number
-    save_catalog()
+    if box_number and part_number != "Part number":
+        catalog[part_number] = box_number
+        box_label.configure(text=f"BOX: {box_number}")
+        save_catalog()
+    else:
+        message_label.configure(text="Enter box number.")
 
 
-
+def delete_from_catalog():
+    """Delete lego part from the catalog."""
+    part_number = part_number_variable.get()
+    if part_number:
+        if messagebox.askyesno("Warning", message="Are you sure ?"):
+            del catalog[part_number]
+            box_label.configure(text="NOT IN COLLECTION")
+            save_catalog()
+        else:
+            message_label.configure(text="No changes made.")
+    else:
+        message_label.configure(text="Nothing to delete.")
 
 
 def save_catalog():
@@ -169,7 +188,8 @@ part_drawing_label = Label(image=part_drawing_image,
                            borderwidth=0)
 part_drawing_label.place(x=220, y=100)
 
-part_number_label = Label(text="Part number",
+part_number_variable = StringVar(root, "Part number")
+part_number_label = Label(textvariable=part_number_variable,
                           justify='center',
                           font=('Manrope', 11, 'bold'),
                           bg=colors[1],
@@ -219,7 +239,8 @@ delete_button_image = PhotoImage(file=resource_path('images/DELETE_button.png'))
 delete_button = Button(image=delete_button_image, 
                        bg=colors[1], 
                        activebackground=colors[1],
-                       borderwidth=0)
+                       borderwidth=0,
+                       command=delete_from_catalog)
 delete_button.place(x=323, y=326)
 
 message_label = Label(text="test", 
