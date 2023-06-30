@@ -12,7 +12,7 @@ from tkinter import messagebox, Label, PhotoImage, Entry
 
 import requests
 
-colors = ["#D7263D", "#02182B", "#0197F6", "#448FA3", "#68C5DB"]
+colors = ["#D7263D", "#02182B", "#0197F6", "#448FA3", "#68C5DB", "#FFFFFF"]
 catalog = {}
 
 
@@ -53,7 +53,7 @@ def create_part_image(link):
     u.close()
     # Create a PIL Image object from the raw data
     image = img.open(io.BytesIO(raw_data))
-    # Manipulate
+    # Manipulate image
     resized_image = image.resize((100, 100))
     final_image = remove(resized_image)
     # Create a PhotoImage object from the resized image
@@ -122,52 +122,94 @@ y = (screen_height // 2) - (window_height // 2)
 root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
 background_image = PhotoImage(file=resource_path("images/background.png"))
-background_label = Label(image=background_image, borderwidth=0)
+background_label = Label(image=background_image,
+                         borderwidth=0)
 background_label.pack()
 
-app_name = Label(text="BRICK SORTER", font=("Manrope ExtraBold", 27), bg=colors[1], fg=colors[0])
+app_name = Label(text="BRICK SORTER",
+                 font=("Manrope ExtraBold", 27),
+                 bg=colors[1],
+                 fg=colors[0])
 app_name.place(x=140, y=0)
 
-search_entry = Entry(justify='center', width=12, font=('Manrope', 14),
-                  bg=colors[0], border=0, fg='white')
-search_entry.pack()
+search_entry = Entry(justify='center',
+                     font=('Manrope', 14),
+                     bg=colors[0],
+                     fg=colors[5],
+                     borderwidth=0,
+                     width=12)
 search_entry.place(x=200, y=57, height=25)
 search_entry.focus()
 
 search_button_image = PhotoImage(file=resource_path("images/SEARCH button.png"))
-search_button = Button(image=search_button_image, borderwidth=0, bg=colors[0], activebackground=colors[0],
+search_button = Button(image=search_button_image,
+                       bg=colors[0],
+                       activebackground=colors[0],
+                       borderwidth=0,
                        command=update_window)
 search_button.place(x=370, y=58)
 
-part_drawing_image = PhotoImage(file=resource_path("images/dummy_picture.png"))
-part_drawing_label = Label(image=part_drawing_image)
-part_drawing_label.place(x=220, y=101)
+part_drawing_image = PhotoImage(file=resource_path("images/lego.png"))
+part_drawing_label = Label(image=part_drawing_image,
+                           borderwidth=0)
+part_drawing_label.place(x=220, y=100)
 
-part_number_label = Label(text="3022", justify="center", font=("Manrope", 11, 'bold'), bg=colors[1], fg='white', height=1)
+part_number_label = Label(text="Part number",
+                          justify="center",
+                          font=("Manrope", 11, 'bold'),
+                          bg=colors[1],
+                          fg=colors[5])
 part_number_label.place(x=21, y=210, width=500)
 
-part_name_label = Label(text="Plate 2x2", justify="center", font=("Manrope", 11, 'bold'), bg=colors[1], fg='white', height=1)
+part_name_label = Label(text="Part name",
+                        justify="center",
+                        font=("Manrope", 11, 'bold'),
+                        bg=colors[1],
+                        fg=colors[5])
 part_name_label.place(x=21, y=235, width=500)
 
-bricklink_button = Button(text="Bricklink", borderwidth=0, font=("Manrope", 10, 'bold', 'underline'), bg=colors[1], fg='white', activebackground=colors[1], activeforeground='white')
+bricklink_button = Button(text="Bricklink",
+                          borderwidth=0,
+                          font=("Manrope", 10, 'bold', 'underline'),
+                          bg=colors[1],
+                          fg=colors[5],
+                          activebackground=colors[1],
+                          activeforeground=colors[5])
 bricklink_button.place(x=21, y=260, width=500)
 
-box_label = Label(text="BOX: A", justify="center", font=("Manrope ExtraBold", 13), bg=colors[1], fg=colors[0], height=1)
+box_label = Label(text="BOX: _",
+                  justify="center",
+                  font=("Manrope ExtraBold", 13),
+                  bg=colors[1],
+                  fg=colors[0])
 box_label.place(x=121, y=290, width=300)
 
-box_entry = Entry(justify='center', width=4, font=('Manrope', 12, 'bold'),
-                  bg=colors[0], border=0, fg='white')
+box_entry = Entry(justify='center',
+                  font=('Manrope', 12, 'bold'),
+                  bg=colors[0],
+                  fg=colors[5],
+                  borderwidth=0,
+                  width=4)
 box_entry.place(x=158, y=329)
 
 add_button_image = PhotoImage(file=resource_path("images/ADD button.png"))
-add_button = Button(image=add_button_image, borderwidth=0, bg=colors[1], activebackground=colors[1])
+add_button = Button(image=add_button_image, 
+                    bg=colors[1], 
+                    activebackground=colors[1], 
+                    borderwidth=0)
 add_button.place(x=231, y=326)
 
 delete_button_image = PhotoImage(file=resource_path("images/DELETE button.png"))
-delete_button = Button(image=delete_button_image, borderwidth=0, bg=colors[1], activebackground=colors[1])
+delete_button = Button(image=delete_button_image, 
+                       bg=colors[1], 
+                       activebackground=colors[1],
+                       borderwidth=0)
 delete_button.place(x=323, y=326)
 
-message_label = Label(text="test", font=("Manrope", 10, 'bold'), bg=colors[1], fg=colors[0])
+message_label = Label(text="test", 
+                      font=("Manrope", 10, 'bold'), 
+                      bg=colors[1], 
+                      fg=colors[0])
 message_label.place(x=10, y=374)
 
 root.mainloop()
