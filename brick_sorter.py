@@ -35,17 +35,22 @@ def rebrickable_api(part_num):
     """Return lego part information from rebrickable.com API."""
     key = get_api_key()
     url = f'https://rebrickable.com/api/v3/lego/parts/{part_num}/?key={key}'
-    if requests.get(url).status_code == 200:
-        lego_data = requests.get(url).json()
+    try:
+        if requests.get(url).status_code == 200:
+            lego_data = requests.get(url).json()
 
-        part_img_url = lego_data['part_img_url']
-        part_number = lego_data['part_num']
-        part_name = lego_data['name']
+            part_img_url = lego_data['part_img_url']
+            part_number = lego_data['part_num']
+            part_name = lego_data['name']
 
-        bricklink_id = lego_data['external_ids']['BrickLink'][0]
-        part_url = f'https://www.bricklink.com/v2/catalog/catalogitem.page?P={bricklink_id}#T=C'
+            bricklink_id = lego_data['external_ids']['BrickLink'][0]
+            part_url = f'https://www.bricklink.com/v2/catalog/catalogitem.page?P={bricklink_id}#T=C'
 
-        return part_img_url, part_number, part_name, part_url
+            return part_img_url, part_number, part_name, part_url
+        else:
+            message_label.configure(text="API Error.")
+    except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError, requests.exceptions.JSONDecodeError):
+        message_label.configure(text="Connection Error.")
 
 
 def create_part_image(link):
