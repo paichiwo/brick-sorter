@@ -145,6 +145,7 @@ root = Tk()
 root.title("Lego Sorter")
 root.resizable(False, False)
 root.configure(bg=colors[1])
+root.iconbitmap(resource_path("./images/BS.ico"))
 
 # Set the window geometry
 window_width = 540
