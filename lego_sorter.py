@@ -2,13 +2,14 @@ import io
 import json
 import os
 import sys
+import requests
 import webbrowser
 from urllib.request import urlopen
 from rembg import remove
 from PIL import Image as img
 from PIL import ImageTk as imgtk
 from tkinter import Tk, Button, Label, PhotoImage, Entry, messagebox, StringVar
-import requests
+from tkextrafont import Font
 
 
 colors = ['#D7263D', '#02182B', '#0197F6', '#448FA3', '#68C5DB', '#FFFFFF']
@@ -142,10 +143,14 @@ def load_catalog():
 
 # Create the window and widgets
 root = Tk()
-root.title("Lego Sorter")
+root.title("Brick Sorter")
 root.resizable(False, False)
 root.configure(bg=colors[1])
 root.iconbitmap(resource_path("./images/BS.ico"))
+
+font_reg = Font(file=resource_path('./font/Manrope-Regular.ttf'), family='Manrope')
+font_bold = Font(file=resource_path('./font/Manrope-ExtraBold.ttf'), family='Manrope ExtraBold')
+
 
 # Set the window geometry
 window_width = 540
@@ -158,6 +163,7 @@ x = (screen_width // 2) - (window_width // 2)
 y = (screen_height // 2) - (window_height // 2)
 # Set the window's position
 root.geometry(f'{window_width}x{window_height}+{x}+{y}')
+
 
 background_image = PhotoImage(file=resource_path('./images/background.png'))
 background_label = Label(image=background_image,
