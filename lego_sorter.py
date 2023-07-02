@@ -100,7 +100,7 @@ def add_to_catalog():
     part_number = part_number_variable.get()
     box_number = box_entry.get()
     if box_number and part_number != "Part number":
-        if not catalog[part_number]:
+        if part_number not in catalog:
             catalog[part_number] = box_number.upper()
             box_label.configure(text=f"BOX: {catalog[part_number]}")
             save_catalog()
@@ -148,11 +148,11 @@ root.resizable(False, False)
 root.configure(bg=colors[1])
 root.iconbitmap(resource_path("./images/BS.ico"))
 
+# Use these fonts
 font_reg = Font(file=resource_path('./font/Manrope-Regular.ttf'), family='Manrope')
 font_bold = Font(file=resource_path('./font/Manrope-ExtraBold.ttf'), family='Manrope ExtraBold')
 
-
-# Set the window geometry
+# Set the window geometry and place the window in the center of the screen
 window_width = 540
 window_height = 400
 # Get the screen width and height
@@ -261,7 +261,3 @@ message_label = Label(text="",
 message_label.place(x=10, y=374)
 
 root.mainloop()
-
-
-# if __name__ == "__main__":
-#     main()
