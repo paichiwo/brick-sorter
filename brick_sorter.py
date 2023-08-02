@@ -12,6 +12,12 @@ from tkinter import Tk, Button, Label, PhotoImage, Entry, messagebox, StringVar
 from tkextrafont import Font
 
 
+# create new app icon
+# create new catalog structure
+# move helpers to helpers.py
+# improve UI
+# reimplement resource_path for universal file usage (pyinstaller)
+
 colors = ['#D7263D', '#02182B', '#0197F6', '#448FA3', '#68C5DB', '#FFFFFF']
 catalog = {}
 
