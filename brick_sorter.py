@@ -154,8 +154,8 @@ root.configure(bg=colors[1])
 root.iconbitmap(resource_path("./images/BS.ico"))
 
 # Use these fonts
-font_reg = Font(file=resource_path('./font/Manrope-Regular.ttf'), family='Manrope')
-font_bold = Font(file=resource_path('./font/Manrope-ExtraBold.ttf'), family='Manrope ExtraBold')
+font_reg = Font(file='font/Manrope-Regular.ttf', family='Manrope')
+font_bold = Font(file='./font/Manrope-ExtraBold.ttf', family='Manrope ExtraBold')
 
 # Set the window geometry and place the window in the center of the screen
 window_width = 540
@@ -191,7 +191,7 @@ search_entry.place(x=190, y=57, height=25)
 search_entry.bind('<Return>', lambda event=None: search_button.invoke())
 search_entry.focus()
 
-search_button_image = PhotoImage(file=resource_path('images/SEARCH_button.png'))
+search_button_image = PhotoImage(file=resource_path('./images/SEARCH_button.png'))
 search_button = Button(image=search_button_image,
                        bg=colors[0],
                        activebackground=colors[0],
@@ -199,7 +199,7 @@ search_button = Button(image=search_button_image,
                        command=update_window)
 search_button.place(x=370, y=58)
 
-part_drawing_image = PhotoImage(file=resource_path('images/logo.png'))
+part_drawing_image = PhotoImage(file=resource_path('./images/logo.png'))
 part_drawing_label = Label(image=part_drawing_image,
                            borderwidth=0)
 part_drawing_label.place(x=220, y=100)
@@ -243,7 +243,7 @@ box_entry = Entry(justify='center',
                   width=4)
 box_entry.place(x=158, y=329)
 
-add_button_image = PhotoImage(file=resource_path('images/ADD_button.png'))
+add_button_image = PhotoImage(file=resource_path('./images/ADD_button.png'))
 add_button = Button(image=add_button_image, 
                     bg=colors[1], 
                     activebackground=colors[1], 
@@ -251,7 +251,7 @@ add_button = Button(image=add_button_image,
                     command=add_to_catalog)
 add_button.place(x=231, y=326)
 
-delete_button_image = PhotoImage(file=resource_path('images/DELETE_button.png'))
+delete_button_image = PhotoImage(file=resource_path('./images/DELETE_button.png'))
 delete_button = Button(image=delete_button_image, 
                        bg=colors[1], 
                        activebackground=colors[1],
