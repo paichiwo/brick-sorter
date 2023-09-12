@@ -1,5 +1,5 @@
 requests
-rembg==2.0.50
-Pillow==10.0.0
+rembg
+Pillow
 future
 tkextrafont
