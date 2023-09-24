@@ -1,6 +1,6 @@
 ## **Brick Sorter**
 
-![](screenshot/screenshot_1.png)
+![](img/screenshot/screenshot_1.png)
 
 This is a desktop application called Brick Sorter that allows you to search for LEGO parts and manage your LEGO collection. The app uses the Rebrickable.com API to fetch information about LEGO parts based on their part numbers. It also provides features to add parts to your collection and associate them with box numbers.
 
