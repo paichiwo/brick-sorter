@@ -20,7 +20,8 @@ class BrickSorter(ctk.CTk):
 
     def gui(self):
 
-
+        self.logo = ctk.CTkLabel(self, text="BRICK SORTER", font=("Arial", 40, 'bold'))
+        self.logo.pack(pady=10)
 
         self.search_frame = ctk.CTkFrame(self)
         self.search_frame.pack(fill='x', padx=10, pady=10)
