@@ -1,6 +1,7 @@
 import requests
 import customtkinter as ctk
-from src.helpers import get_api_key
+from src.helpers import rebrickable_api
+
 
 
 class BrickSorter(ctk.CTk):
@@ -8,60 +9,58 @@ class BrickSorter(ctk.CTk):
         super().__init__(*args, **kwargs)
 
         self.logo = None
-        self.search_frame = None
-        self.search = None
-        self.button = None
+
+        self.frame_s = None
+        self.search_s = None
+        self.button_s = None
+
+        self.frame_r = None
+
         self.message = None
 
-        self.title("App")
-        self.geometry("400x500")
+        self.title("Brick Sorter v0.01")
+        self.geometry("600x400")
+        self.configure(fg_color="#02182b")
+        ctk.set_default_color_theme("data/brick_sorter_theme_v0.1.json")
 
-        self.gui()
-
-    def gui(self):
-
-        self.logo = ctk.CTkLabel(self, text="BRICK SORTER", font=("Arial", 40, 'bold'))
-        self.logo.pack(pady=10)
-
-        self.search_frame = ctk.CTkFrame(self)
-        self.search_frame.pack(fill='x', padx=10, pady=10)
-        self.search_frame.columnconfigure(0, weight=1)
-
-        self.search = ctk.CTkEntry(self.search_frame)
-        self.button = ctk.CTkButton(self.search_frame, text="Search", width=20, command=self.search_part)
-        self.search.grid(row=0, column=0, columnspan=2, sticky='ew', padx=10)
-        self.button.grid(row=0, column=2, padx=10, pady=10)
+        self.logo_label()
+        self.search_frame()
+        self.search_result_frame()
 
         self.message = ctk.CTkLabel(self, text="test")
         self.message.pack()
 
+    def logo_label(self):
+        self.logo = ctk.CTkLabel(self, text="BRICK SORTER", text_color="#D7263D", font=("Arial", 40, 'bold'))
+        self.logo.pack(pady=10)
 
+    def search_frame(self):
+
+        self.frame_s = ctk.CTkFrame(self)
+        self.frame_s.pack(fill='x', padx=10)
+        self.frame_s.columnconfigure(0, weight=1)
+
+        self.search_s = ctk.CTkEntry(self.frame_s, justify="center")
+        self.button_s = ctk.CTkButton(self.frame_s, text="Search", width=20, command=self.search_part)
+        self.search_s.grid(row=0, column=0, columnspan=2, sticky='ew', padx=10)
+        self.button_s.grid(row=0, column=2, sticky='w', padx=10, pady=10)
+
+        self.search_s.bind('<Return>', lambda event=None: self.button_s.invoke())
+        self.search_s.focus()
+
+    def search_result_frame(self):
+        self.frame_r = ctk.CTkFrame(self)
+        self.frame_r.pack(fill='x', padx=10, pady=10)
 
     def search_part(self):
-        part_img_url, part_number, part_name, part_url = self.rebrickable_api(self.search.get())
-        print(part_img_url)
-        print(part_number)
-        print(part_name)
-        print(part_url)
-
-    def rebrickable_api(self, part_num):
-        """Return lego part information from rebrickable.com API."""
-        key = get_api_key()
-        url = f'https://rebrickable.com/api/v3/lego/parts/{part_num}/?key={key}'
         try:
-            if requests.get(url).status_code == 200:
-                lego_data = requests.get(url).json()
-
-                part_img_url = lego_data['part_img_url']
-                part_number = lego_data['part_num']
-                part_name = lego_data['name']
-                bricklink_id = lego_data['external_ids']['BrickLink'][0]
-                part_url = f'https://www.bricklink.com/v2/catalog/catalogitem.page?P={bricklink_id}#T=C'
-                return part_img_url, part_number, part_name, part_url
-            else:
-                self.message.configure(text="API Error.")
-        except (requests.exceptions.HTTPError,
-                requests.exceptions.ConnectionError,
-                requests.exceptions.JSONDecodeError):
+            part_img_url, part_number, part_name, part_url = rebrickable_api(self.search.get())
+            print(part_img_url)
+            print(part_number)
+            print(part_name)
+            print(part_url)
+        except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError):
             self.message.configure(text="Connection Error.")
+
+
 
