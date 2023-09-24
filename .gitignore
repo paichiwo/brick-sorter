@@ -2,7 +2,9 @@
 /venv
 /.idea
 /__pycache__
+
 # Project
+/db/inventory.db
 /catalog.json
 /keys/api.txt
 api.txt
