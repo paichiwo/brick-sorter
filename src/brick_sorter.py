@@ -1,5 +1,6 @@
 import requests
 import customtkinter as ctk
+from PIL import Image
 from tkinter import PhotoImage
 from src.helpers import rebrickable_api
 
@@ -38,7 +39,7 @@ class BrickSorter(ctk.CTk):
         self.frame_s.columnconfigure(0, weight=1)
 
         self.search_s = ctk.CTkEntry(self.frame_s, justify="center", font=("Any", 20, "bold"))
-        self.button_img = PhotoImage(file="img/SEARCH_button.png")
+        self.button_img = ctk.CTkImage(Image.open("img/SEARCH_button.png"))
         self.button_s = ctk.CTkButton(self.frame_s, image=self.button_img, text="", width=18, command=self.search_part)
         self.search_s.grid(row=0, column=0, columnspan=2, sticky="ew", padx=10)
         self.button_s.grid(row=0, column=2, padx=10, pady=10)
