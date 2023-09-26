@@ -61,14 +61,14 @@
   },
   "CTkEntry": {
     "corner_radius": 13,
-    "border_width": 0,
+    "border_width": 2,
     "fg_color": [
       "#F9F9FA",
       "#d7263d"
     ],
     "border_color": [
       "#979DA2",
-      "#565B5E"
+      "#f5485f"
     ],
     "text_color": [
       "gray10",
