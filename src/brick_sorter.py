@@ -1,9 +1,7 @@
 import requests
 import customtkinter as ctk
 from PIL import Image
-from tkinter import PhotoImage
-from src.helpers import rebrickable_api
-
+from src.helpers import rebrickable_api, create_part_image
 
 class BrickSorter(ctk.CTk):
     def __init__(self, *args, **kwargs):
@@ -15,6 +13,8 @@ class BrickSorter(ctk.CTk):
         self.button_img = None
         self.button_s = None
         self.frame_sr = None
+        self.image_sr = None
+        self.image_lbl = None
 
         self.message = None
 
@@ -51,7 +51,9 @@ class BrickSorter(ctk.CTk):
         self.frame_sr = ctk.CTkFrame(self)
         self.frame_sr.pack(fill='x', padx=10, pady=10)
 
-        self.image_sr = ctk.CTkLabel(self.frame_sr, image="", width=100, height=100)
+        self.image_sr = ctk.CTkImage(Image.open('img/logo.png'))
+        self.image_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.image_sr)
+        self.image_lbl.pack()
 
     def message_label(self):
         self.message = ctk.CTkLabel(self, text="test")
@@ -60,7 +62,10 @@ class BrickSorter(ctk.CTk):
     def search_part(self):
         try:
             part_img_url, part_number, part_name, part_url = rebrickable_api(self.search_s.get())
-            print(part_img_url)
+            image = create_part_image(part_img_url)
+            self.image_lbl.configure(image=image)
+            self.image_lbl['image'] = image
+
             print(part_number)
             print(part_name)
             print(part_url)
