@@ -14,7 +14,7 @@ class BrickSorter(ctk.CTk):
         self.search_s = None
         self.button_img = None
         self.button_s = None
-        self.frame_r = None
+        self.frame_sr = None
 
         self.message = None
 
@@ -48,8 +48,10 @@ class BrickSorter(ctk.CTk):
         self.search_s.focus()
 
     def search_result_frame(self):
-        self.frame_r = ctk.CTkFrame(self)
-        self.frame_r.pack(fill='x', padx=10, pady=10)
+        self.frame_sr = ctk.CTkFrame(self)
+        self.frame_sr.pack(fill='x', padx=10, pady=10)
+
+        self.image_sr = ctk.CTkLabel(self.frame_sr, image="", width=100, height=100)
 
     def message_label(self):
         self.message = ctk.CTkLabel(self, text="test")
