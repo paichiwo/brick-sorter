@@ -3,6 +3,7 @@ import customtkinter as ctk
 from PIL import Image
 from src.helpers import rebrickable_api, create_part_image
 
+
 class BrickSorter(ctk.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

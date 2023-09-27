@@ -3,7 +3,6 @@ import requests
 from rembg import remove
 from PIL import Image, ImageTk
 from urllib.request import urlopen
-import customtkinter as ctk
 
 
 def get_api_key():
