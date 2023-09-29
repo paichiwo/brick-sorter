@@ -1,14 +1,22 @@
+import sqlite3
+import tkinter
 import webbrowser
 import requests
 import customtkinter as ctk
 from PIL import Image
 from CTkScrollableDropdown import CTkScrollableDropdown
 from src.helpers import rebrickable_api, create_part_image, read_lego_colors
+from src.database import Database
 
 
 class BrickSorter(ctk.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.db = Database()
+
+        self.part_nb = tkinter.StringVar()
+        self.part_nm = tkinter.StringVar()
 
         # -- WINDOW SETUP --
         self.title("Brick Sorter v0.01")
@@ -48,8 +56,8 @@ class BrickSorter(ctk.CTk):
 
         self.part_img = ctk.CTkImage(Image.open('img/placeholder.png'))
         self.part_img_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.part_img, width=100, height=100)
-        self.part_number_lbl = ctk.CTkLabel(self.frame_sr, text="")
-        self.part_name_lbl = ctk.CTkLabel(self.frame_sr, text="")
+        self.part_number_lbl = ctk.CTkLabel(self.frame_sr, textvariable=self.part_nb)
+        self.part_name_lbl = ctk.CTkLabel(self.frame_sr, textvariable=self.part_nm)
         self.part_url_btn = ctk.CTkButton(self.frame_sr, text="", fg_color='transparent', width=50)
 
         self.part_img_lbl.grid(row=0, column=0, rowspan=3, padx=10)
@@ -73,7 +81,7 @@ class BrickSorter(ctk.CTk):
 
         self.amount = ctk.CTkEntry(self.frame_ui, placeholder_text="Amount", width=50)
         self.box_entry = ctk.CTkEntry(self.frame_ui, placeholder_text="Box", width=50)
-        self.add_btn = ctk.CTkButton(self.frame_ui, text="Add")
+        self.add_btn = ctk.CTkButton(self.frame_ui, text="Add", command=self.add_part)
         self.del_btn = ctk.CTkButton(self.frame_ui, text="Delete")
 
         self.color.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="we")
@@ -82,8 +90,7 @@ class BrickSorter(ctk.CTk):
         self.add_btn.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="we")
         self.del_btn.grid(row=1, column=2, columnspan=2, padx=10, sticky="we")
 
-
-        # -- MESSAGE FRAME --
+        # -- MESSAGE ELEMENT --
         self.message = ctk.CTkLabel(self, text="")
         self.message.pack(side='bottom')
 
@@ -93,11 +100,29 @@ class BrickSorter(ctk.CTk):
             image = create_part_image(part_img_url)
 
             self.part_img_lbl.configure(image=image)
-            self.part_number_lbl.configure(text=part_number)
-            self.part_name_lbl.configure(text=part_name)
+            self.part_nb.set(part_number)
+            self.part_nm.set(part_name)
             self.part_url_btn.configure(text="Bricklink",
                                         command=lambda: webbrowser.open(part_url))
         except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError):
             self.message.configure(text="Connection Error")
         except KeyError:
             self.message.configure(text="Part doesn't exist")
+
+    def add_part(self):
+        part_number = self.part_nb.get()
+        part_name = self.part_nm.get()
+        part_color = self.color.get()
+        part_amount = self.amount.get()
+        part_box = self.box_entry.get()
+
+        if part_number and part_name and part_color and part_amount and part_box:
+            try:
+                self.db.insert_part(part_number, part_name, part_color, part_amount, part_box)
+                self.message.configure(text="Part inserted successfully")
+
+            except sqlite3.Error as e:
+                self.message.configure(text=f"Error inserting part: {e}")
+
+    def delete_part(self):
+        pass
