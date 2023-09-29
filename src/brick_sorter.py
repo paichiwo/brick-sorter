@@ -3,7 +3,7 @@ import webbrowser
 import requests
 import customtkinter as ctk
 from PIL import Image
-from src.helpers import rebrickable_api, create_part_image, lego_colors
+from src.helpers import rebrickable_api, create_part_image, read_lego_colors
 
 
 class BrickSorter(ctk.CTk):
@@ -67,7 +67,8 @@ class BrickSorter(ctk.CTk):
         self.box_entry = ctk.CTkEntry(self.frame_ui, placeholder_text="Box number")
         self.add_btn = ctk.CTkButton(self.frame_ui, text="Add")
         self.del_btn = ctk.CTkButton(self.frame_ui, text="Delete")
-        self.color = ctk.CTkComboBox(self.frame_ui, values=lego_colors)
+        self.color = ctk.CTkComboBox(self.frame_ui, values=read_lego_colors())
+        self.color.set("None")
 
         self.box_entry.grid(row=0, column=0, padx=10, pady=10)
         self.add_btn.grid(row=0, column=1)
@@ -86,7 +87,7 @@ class BrickSorter(ctk.CTk):
             self.part_img_lbl.configure(image=image)
             self.part_number_lbl.configure(text=part_number)
             self.part_name_lbl.configure(text=part_name)
-            self.part_url_btn.configure(text="Bricklink", font=('Any', 12, 'underline'),
+            self.part_url_btn.configure(text="Bricklink",
                                         command=lambda: webbrowser.open(part_url))
         except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError):
             self.message.configure(text="Connection Error")
