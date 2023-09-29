@@ -27,9 +27,9 @@ def rebrickable_api(part_num):
 
 def create_part_image(link):
     """Return tkinter image from URL, remove background and resize to 100x100 pixels."""
-    u = urlopen(link)
-    raw_data = u.read()
-    u.close()
+    url_image = urlopen(link)
+    raw_data = url_image.read()
+    url_image.close()
     image = Image.open(io.BytesIO(raw_data))
     resized_image = image.resize((100, 100))
     final_image = remove(resized_image)
