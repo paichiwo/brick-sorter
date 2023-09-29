@@ -6,6 +6,7 @@ def main():
     db = Database()
     db.create_db()
     BrickSorter().mainloop()
+    db.close_db()
 
 
 if __name__ == "__main__":
