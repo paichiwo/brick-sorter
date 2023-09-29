@@ -3,7 +3,7 @@ import webbrowser
 import requests
 import customtkinter as ctk
 from PIL import Image
-from src.helpers import rebrickable_api, create_part_image, open_link
+from src.helpers import rebrickable_api, create_part_image
 
 
 class BrickSorter(ctk.CTk):
@@ -76,8 +76,8 @@ class BrickSorter(ctk.CTk):
         self.part_url_btn.grid(row=2, column=1, padx=10)
 
     def message_label(self):
-        self.message = ctk.CTkLabel(self, text="test")
-        self.message.pack()
+        self.message = ctk.CTkLabel(self, text="")
+        self.message.pack(side='bottom')
 
     def search_part(self):
         try:
@@ -90,4 +90,5 @@ class BrickSorter(ctk.CTk):
             self.part_url_btn.configure(text="Bricklink", font=('Any', 12, 'underline'), command=lambda: webbrowser.open(part_url))
         except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError):
             self.message.configure(text="Connection Error.")
-
+        except KeyError:
+            self.message.configure(text="Part doesn't exist")
