@@ -1,8 +1,8 @@
 import webbrowser
-
 import requests
 import customtkinter as ctk
 from PIL import Image
+from CTkScrollableDropdown import CTkScrollableDropdown
 from src.helpers import rebrickable_api, create_part_image, read_lego_colors
 
 
@@ -12,7 +12,7 @@ class BrickSorter(ctk.CTk):
 
         # -- WINDOW SETUP --
         self.title("Brick Sorter v0.01")
-        self.geometry("400x320")
+        self.geometry("400x400")
         self.configure(fg_color=("#BBBBBB", "#02182b"))
         self.resizable(False, False)
         ctk.set_default_color_theme("data/brick_sorter_theme.json")
@@ -63,17 +63,25 @@ class BrickSorter(ctk.CTk):
         self.frame_ui.columnconfigure(0, weight=1)
         self.frame_ui.columnconfigure(1, weight=1)
         self.frame_ui.columnconfigure(2, weight=1)
+        self.frame_ui.columnconfigure(3, weight=1)
 
-        self.box_entry = ctk.CTkEntry(self.frame_ui, placeholder_text="Box number")
+        self.color = ctk.CTkOptionMenu(self.frame_ui)
+        self.color.set("None")
+        CTkScrollableDropdown(self.color, values=read_lego_colors(), font=("Any", 10),
+                              button_color=("grey92", "#021f37"), hover_color="#d7263d",
+                              frame_border_width=1, justify="left", width=180)
+
+        self.amount = ctk.CTkEntry(self.frame_ui, placeholder_text="Amount", width=50)
+        self.box_entry = ctk.CTkEntry(self.frame_ui, placeholder_text="Box", width=50)
         self.add_btn = ctk.CTkButton(self.frame_ui, text="Add")
         self.del_btn = ctk.CTkButton(self.frame_ui, text="Delete")
-        self.color = ctk.CTkComboBox(self.frame_ui, values=read_lego_colors())
-        self.color.set("None")
 
-        self.box_entry.grid(row=0, column=0, padx=10, pady=10)
-        self.add_btn.grid(row=0, column=1)
-        self.del_btn.grid(row=0, column=2, padx=10)
-        self.color.grid(row=1, column=0)
+        self.color.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="we")
+        self.amount.grid(row=0, column=2, padx=10, sticky="we")
+        self.box_entry.grid(row=0, column=3, padx=10, sticky="we")
+        self.add_btn.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="we")
+        self.del_btn.grid(row=1, column=2, columnspan=2, padx=10, sticky="we")
+
 
         # -- MESSAGE FRAME --
         self.message = ctk.CTkLabel(self, text="")
