@@ -3,3 +3,4 @@ rembg
 Pillow
 future
 tkextrafont
+customtkinter
