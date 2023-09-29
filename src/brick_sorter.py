@@ -12,12 +12,13 @@ class BrickSorter(ctk.CTk):
 
         # -- WINDOW SETUP --
         self.title("Brick Sorter v0.01")
-        self.geometry("400x400")
+        self.geometry("400x320")
         self.configure(fg_color=("#BBBBBB", "#02182b"))
-        ctk.set_default_color_theme("data/brick_sorter_theme_v0.1.json")
+        self.resizable(False, False)
+        ctk.set_default_color_theme("data/brick_sorter_theme")
 
         # -- LOGO --
-        self.logo = ctk.CTkLabel(self, text="BRICK SORTER", text_color="#D7263D", font=("Arial", 40, 'bold'))
+        self.logo = ctk.CTkLabel(self, text="BRICK SORTER", text_color="#D7263D", font=("Any", 40, 'bold'))
         self.logo.pack(pady=10)
 
         # -- SEARCH FRAME --
@@ -25,7 +26,8 @@ class BrickSorter(ctk.CTk):
         self.frame_s.pack(fill='x', padx=10)
         self.frame_s.columnconfigure(0, weight=1)
 
-        self.search_entry = ctk.CTkEntry(self.frame_s, justify="center", font=("Any", 20, "bold"))
+        self.search_entry = ctk.CTkEntry(self.frame_s, justify="center", font=("Any", 20, "bold"),
+                                         placeholder_text="Search")
         self.search_entry.focus()
         self.search_entry.bind('<Return>', lambda event=None: self.search_btn.invoke())
         self.search_btn_img = ctk.CTkImage(Image.open("img/SEARCH_button.png"))
@@ -50,7 +52,7 @@ class BrickSorter(ctk.CTk):
         self.part_name_lbl = ctk.CTkLabel(self.frame_sr, text="")
         self.part_url_btn = ctk.CTkButton(self.frame_sr, text="", fg_color='transparent', width=50)
 
-        self.part_img_lbl.grid(row=0, column=0, rowspan=3, sticky='w', padx=10)
+        self.part_img_lbl.grid(row=0, column=0, rowspan=3, padx=10)
         self.part_number_lbl.grid(row=0, column=1, padx=10)
         self.part_name_lbl.grid(row=1, column=1, padx=10)
         self.part_url_btn.grid(row=2, column=1, padx=10)
@@ -62,7 +64,7 @@ class BrickSorter(ctk.CTk):
         self.frame_ui.columnconfigure(1, weight=1)
         self.frame_ui.columnconfigure(2, weight=1)
 
-        self.box_entry = ctk.CTkEntry(self.frame_ui)
+        self.box_entry = ctk.CTkEntry(self.frame_ui, placeholder_text="Box number")
         self.add_btn = ctk.CTkButton(self.frame_ui, text="Add")
         self.del_btn = ctk.CTkButton(self.frame_ui, text="Delete")
 
