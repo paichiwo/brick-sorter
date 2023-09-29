@@ -20,7 +20,7 @@ class BrickSorter(ctk.CTk):
 
         # -- WINDOW SETUP --
         self.title("Brick Sorter v0.01")
-        self.geometry("400x800")
+        self.geometry("400x600")
         self.configure(fg_color=("#BBBBBB", "#02182b"))
         self.resizable(False, False)
         ctk.set_default_color_theme("data/brick_sorter_theme.json")
@@ -54,7 +54,7 @@ class BrickSorter(ctk.CTk):
         self.frame_ui.columnconfigure(3, weight=1)
 
         self.color = ctk.CTkOptionMenu(self.frame_ui)
-        self.color.set("None")
+        self.color.set("No color")
         CTkScrollableDropdown(self.color, values=read_lego_colors(), font=("Any", 10),
                               button_color=("grey92", "#021f37"), hover_color="#d7263d",
                               frame_border_width=1, justify="left", width=180)
