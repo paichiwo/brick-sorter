@@ -14,3 +14,11 @@ class Database:
                 print("Database created")
             except sqlite3.Error:
                 print("Database exists, proceeding...")
+
+    def close_db(self):
+        self.con.close()
+
+    def insert_part(self, part_number, part_name, part_color, part_amount, part_box):
+        query = "INSERT INTO Inventory (part_number, part_name, color, amount, box) VALUES (?, ?, ?, ?, ?)"
+        self.cur.execute(query, (part_number, part_name, part_color, part_amount, part_box))
+        self.con.commit()
