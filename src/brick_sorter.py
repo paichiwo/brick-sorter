@@ -3,7 +3,7 @@ import webbrowser
 import requests
 import customtkinter as ctk
 from PIL import Image
-from src.helpers import rebrickable_api, create_part_image
+from src.helpers import rebrickable_api, create_part_image, lego_colors
 
 
 class BrickSorter(ctk.CTk):
@@ -67,10 +67,12 @@ class BrickSorter(ctk.CTk):
         self.box_entry = ctk.CTkEntry(self.frame_ui, placeholder_text="Box number")
         self.add_btn = ctk.CTkButton(self.frame_ui, text="Add")
         self.del_btn = ctk.CTkButton(self.frame_ui, text="Delete")
+        self.color = ctk.CTkComboBox(self.frame_ui, values=lego_colors)
 
         self.box_entry.grid(row=0, column=0, padx=10, pady=10)
         self.add_btn.grid(row=0, column=1)
         self.del_btn.grid(row=0, column=2, padx=10)
+        self.color.grid(row=1, column=0)
 
         # -- MESSAGE FRAME --
         self.message = ctk.CTkLabel(self, text="")
