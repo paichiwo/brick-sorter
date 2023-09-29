@@ -76,7 +76,7 @@
     ],
     "placeholder_text_color": [
       "gray52",
-      "gray62"
+      "#fd5d72"
     ]
   },
   "CTkCheckBox": {
