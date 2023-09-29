@@ -71,7 +71,7 @@ class BrickSorter(ctk.CTk):
         self.del_btn.grid(row=1, column=2, columnspan=2, padx=10, sticky="we")
 
         # -- SEARCH RESULT FRAME
-        self.frame_sr = ctk.CTkFrame(self)
+        self.frame_sr = ctk.CTkFrame(self, fg_color="transparent")
         self.frame_sr.pack(fill='x', padx=10)
         self.frame_sr.columnconfigure(0, weight=1)
         self.frame_sr.columnconfigure(1, weight=1)
@@ -99,12 +99,14 @@ class BrickSorter(ctk.CTk):
             part_img_url, part_number, part_name, part_url = rebrickable_api(self.search_entry.get())
             image = create_part_image(part_img_url)
 
+            self.frame_sr.configure(fg_color="#021f37")
+
             self.part_img_lbl.configure(image=image)
             self.part_nb.set(part_number)
             self.part_nm.set(part_name)
             self.part_url_btn.configure(text="Bricklink",
                                         command=lambda: webbrowser.open(part_url))
-            self.db.search_part(part_number)
+            self.db.search_part(part_number)  # print part details
         except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError):
             self.message.configure(text="Connection Error")
         except KeyError:
