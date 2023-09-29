@@ -15,7 +15,7 @@ class BrickSorter(ctk.CTk):
         self.geometry("400x320")
         self.configure(fg_color=("#BBBBBB", "#02182b"))
         self.resizable(False, False)
-        ctk.set_default_color_theme("data/brick_sorter_theme")
+        ctk.set_default_color_theme("data/brick_sorter_theme.json")
 
         # -- LOGO --
         self.logo = ctk.CTkLabel(self, text="BRICK SORTER", text_color="#D7263D", font=("Any", 40, 'bold'))
