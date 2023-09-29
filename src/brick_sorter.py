@@ -52,9 +52,9 @@ class BrickSorter(ctk.CTk):
         self.frame_sr = ctk.CTkFrame(self)
         self.frame_sr.pack(fill='x', padx=10, pady=10)
 
-        self.image_sr = ctk.CTkImage(Image.open('img/logo.png'))
-        self.image_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.image_sr)
-        self.image_lbl.pack()
+        self.image_sr = ctk.CTkImage(Image.open('img/placeholder.png'))
+        self.image_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.image_sr, width=100, height=100)
+        self.image_lbl.pack(anchor='w', padx=10)
 
     def message_label(self):
         self.message = ctk.CTkLabel(self, text="test")
