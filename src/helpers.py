@@ -1,4 +1,6 @@
 import io
+import json
+
 import requests
 from rembg import remove
 from PIL import Image, ImageTk
@@ -37,4 +39,7 @@ def create_part_image(link):
     return photo
 
 
-lego_colors = ['Aqua', 'Black', 'Blue', 'Blue-Violet', 'Bright Green', 'Bright Light Blue', 'Bright Light Orange', 'Bright Light Yellow', 'Bright Pink', 'Brown', 'Chrome Antique Brass', 'Chrome Black', 'Chrome Blue', 'Chrome Gold', 'Chrome Green', 'Chrome Pink', 'Chrome Silver', 'Copper', 'Coral', 'Dark Azure', 'Dark Blue', 'Dark Blue-Violet', 'Dark Bluish Gray', 'Dark Brown', 'Dark Gray', 'Dark Green', 'Dark Nougat', 'Dark Orange', 'Dark Pink', 'Dark Purple', 'Dark Red', 'Dark Salmon', 'Dark Tan', 'Dark Turquoise', 'Dark Yellow', 'Earth Orange', 'Flat Dark Gold', 'Flat Silver', 'Glitter Trans-Clear', 'Glitter Trans-Dark Pink', 'Glitter Trans-Light Blue', 'Glitter Trans-Neon Green', 'Glitter Trans-Orange', 'Glitter Trans-Purple', 'Glow In Dark Opaque', 'Glow In Dark Trans', 'Glow in Dark White', 'Green', 'Lavender', 'Light Aqua', 'Light Blue', 'Light Bluish Gray', 'Light Brown', 'Light Gray', 'Light Green', 'Light Lime', 'Light Nougat', 'Light Orange', 'Light Pink', 'Light Purple', 'Light Salmon', 'Light Turquoise', 'Light Violet', 'Light Yellow', 'Lilac', 'Lime', 'Maersk Blue', 'Magenta', 'Medium Azure', 'Medium Blue', 'Medium Brown', 'Medium Dark Pink', 'Medium Green', 'Medium Lavender', 'Medium Lime', 'Medium Nougat', 'Medium Orange', 'Medium Tan', 'Medium Violet', 'Metallic Black', 'Metallic Copper', 'Metallic Gold', 'Metallic Green', 'Metallic Silver', 'Milky White', 'Neon Yellow', 'Nougat', 'Olive Green', 'Orange', 'Pearl Dark Gray', 'Pearl Gold', 'Pearl Light Gold', 'Pearl Light Gray', 'Pearl Sand Blue', 'Pearl Very Light Gray', 'Pearl White', 'Pink', 'Purple', 'Red', 'Reddish Brown', 'Reddish Copper', 'Reddish Gold', 'Rust', 'Salmon', 'Sand Blue', 'Sand Green', 'Sand Purple', 'Sand Red', 'Satin Trans-Dark Blue', 'Satin Trans-Dark Pink', 'Satin Trans-Green', 'Satin Trans-Light Blue', 'Satin Trans-Purple', 'Satin Transparent Black', 'Satin White', 'Sky Blue', 'Speckle Black-Copper', 'Speckle Black-Gold', 'Speckle Black-Silver', 'Speckle DBGray-Silver', 'Tan', 'Trans-Black (2023)', 'Trans-Bright Green', 'Trans-Brown (Old Trans-Black)', 'Trans-Clear', 'Trans-Dark Blue', 'Trans-Dark Pink', 'Trans-Green', 'Trans-Light Blue', 'Trans-Light Bright Green', 'Trans-Light Green', 'Trans-Light Orange', 'Trans-Light Purple', 'Trans-Medium Blue', 'Trans-Neon Green', 'Trans-Neon Orange', 'Trans-Neon Yellow', 'Trans-Orange', 'Trans-Pink', 'Trans-Purple', 'Trans-Red', 'Trans-Very Lt Blue', 'Trans-Yellow', 'Very Light Bluish Gray', 'Very Light Gray', 'Very Light Orange', 'Violet', 'White', 'Yellow', 'Yellowish Green']
+def read_lego_colors():
+    with open("data/lego_colors.json", "r") as json_file:
+        data_dict = json.load(json_file)
+        return data_dict['lego_colors']
