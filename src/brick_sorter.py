@@ -55,7 +55,7 @@ class BrickSorter(ctk.CTk):
         self.frame_sr.rowconfigure(2, weight=1)
 
         self.part_img = ctk.CTkImage(Image.open('img/placeholder.png'))
-        self.part_img_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.part_img, width=100, height=100)
+        self.part_img_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.part_img, width=100, height=120)
         self.part_number_lbl = ctk.CTkLabel(self.frame_sr, textvariable=self.part_nb)
         self.part_name_lbl = ctk.CTkLabel(self.frame_sr, textvariable=self.part_nm)
         self.part_url_btn = ctk.CTkButton(self.frame_sr, text="", fg_color='transparent', width=50)
@@ -104,6 +104,7 @@ class BrickSorter(ctk.CTk):
             self.part_nm.set(part_name)
             self.part_url_btn.configure(text="Bricklink",
                                         command=lambda: webbrowser.open(part_url))
+            self.db.search_part(part_number)
         except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError):
             self.message.configure(text="Connection Error")
         except KeyError:
@@ -123,6 +124,8 @@ class BrickSorter(ctk.CTk):
 
             except sqlite3.Error as e:
                 self.message.configure(text=f"Error inserting part: {e}")
+        else:
+            self.message.configure(text="Please enter all of the values")
 
     def delete_part(self):
         pass
