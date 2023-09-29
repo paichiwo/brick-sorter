@@ -1,7 +1,9 @@
+import webbrowser
+
 import requests
 import customtkinter as ctk
 from PIL import Image
-from src.helpers import rebrickable_api, create_part_image
+from src.helpers import rebrickable_api, create_part_image, open_link
 
 
 class BrickSorter(ctk.CTk):
@@ -18,7 +20,7 @@ class BrickSorter(ctk.CTk):
         self.part_image_lbl = None
         self.part_number_lbl = None
         self.part_name_lbl = None
-        self.part_url_lbl = None
+        self.part_url_btn = None
 
         self.message = None
 
@@ -64,14 +66,14 @@ class BrickSorter(ctk.CTk):
         self.part_image = ctk.CTkImage(Image.open('img/placeholder.png'))
 
         self.part_image_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.part_image, width=100, height=100)
-        self.part_number_lbl = ctk.CTkLabel(self.frame_sr, text="Part number")
-        self.part_name_lbl = ctk.CTkLabel(self.frame_sr, text="Part name")
-        self.part_url_lbl = ctk.CTkLabel(self.frame_sr, text="Part url")
+        self.part_number_lbl = ctk.CTkLabel(self.frame_sr, text="")
+        self.part_name_lbl = ctk.CTkLabel(self.frame_sr, text="")
+        self.part_url_btn = ctk.CTkButton(self.frame_sr, text="", fg_color='transparent', width=50)
 
         self.part_image_lbl.grid(row=0, column=0, rowspan=3, sticky='w', padx=10)
         self.part_number_lbl.grid(row=0, column=1, padx=10)
         self.part_name_lbl.grid(row=1, column=1, padx=10)
-        self.part_url_lbl.grid(row=2, column=1, padx=10)
+        self.part_url_btn.grid(row=2, column=1, padx=10)
 
     def message_label(self):
         self.message = ctk.CTkLabel(self, text="test")
@@ -85,6 +87,7 @@ class BrickSorter(ctk.CTk):
             self.part_image_lbl.configure(image=image)
             self.part_number_lbl.configure(text=part_number)
             self.part_name_lbl.configure(text=part_name)
-            self.part_url_lbl.configure(text=part_url)
+            self.part_url_btn.configure(text="Bricklink", font=('Any', 12, 'underline'), command=lambda: webbrowser.open(part_url))
         except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError):
             self.message.configure(text="Connection Error.")
+
