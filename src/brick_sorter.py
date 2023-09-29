@@ -27,13 +27,13 @@ class BrickSorter(ctk.CTk):
 
         self.search_entry = ctk.CTkEntry(self.frame_s, justify="center", font=("Any", 20, "bold"))
         self.search_entry.focus()
-        self.search_entry.bind('<Return>', lambda event=None: self.search_button.invoke())
-        self.search_button_img = ctk.CTkImage(Image.open("img/SEARCH_button.png"))
-        self.search_button = ctk.CTkButton(self.frame_s, image=self.search_button_img, text="", width=18,
-                                           command=self.search_part)
+        self.search_entry.bind('<Return>', lambda event=None: self.search_btn.invoke())
+        self.search_btn_img = ctk.CTkImage(Image.open("img/SEARCH_button.png"))
+        self.search_btn = ctk.CTkButton(self.frame_s, image=self.search_btn_img, text="", width=18,
+                                        command=self.search_part)
 
         self.search_entry.grid(row=0, column=0, columnspan=2, sticky="ew", padx=10)
-        self.search_button.grid(row=0, column=2, padx=10, pady=10)
+        self.search_btn.grid(row=0, column=2, padx=10, pady=10)
 
         # -- SEARCH RESULT FRAME
         self.frame_sr = ctk.CTkFrame(self)
@@ -44,18 +44,33 @@ class BrickSorter(ctk.CTk):
         self.frame_sr.rowconfigure(1, weight=1)
         self.frame_sr.rowconfigure(2, weight=1)
 
-        self.part_image = ctk.CTkImage(Image.open('img/placeholder.png'))
-        self.part_image_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.part_image, width=100, height=100)
+        self.part_img = ctk.CTkImage(Image.open('img/placeholder.png'))
+        self.part_img_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.part_img, width=100, height=100)
         self.part_number_lbl = ctk.CTkLabel(self.frame_sr, text="")
         self.part_name_lbl = ctk.CTkLabel(self.frame_sr, text="")
         self.part_url_btn = ctk.CTkButton(self.frame_sr, text="", fg_color='transparent', width=50)
 
-        self.part_image_lbl.grid(row=0, column=0, rowspan=3, sticky='w', padx=10)
+        self.part_img_lbl.grid(row=0, column=0, rowspan=3, sticky='w', padx=10)
         self.part_number_lbl.grid(row=0, column=1, padx=10)
         self.part_name_lbl.grid(row=1, column=1, padx=10)
         self.part_url_btn.grid(row=2, column=1, padx=10)
 
-        # -- MESSAGE FRAME
+        # -- USER INPUT FRAME --
+        self.frame_ui = ctk.CTkFrame(self, height=100)
+        self.frame_ui.pack(fill='x', padx=10)
+        self.frame_ui.columnconfigure(0, weight=1)
+        self.frame_ui.columnconfigure(1, weight=1)
+        self.frame_ui.columnconfigure(2, weight=1)
+
+        self.box_entry = ctk.CTkEntry(self.frame_ui)
+        self.add_btn = ctk.CTkButton(self.frame_ui, text="Add")
+        self.del_btn = ctk.CTkButton(self.frame_ui, text="Delete")
+
+        self.box_entry.grid(row=0, column=0, padx=10, pady=10)
+        self.add_btn.grid(row=0, column=1)
+        self.del_btn.grid(row=0, column=2, padx=10)
+
+        # -- MESSAGE FRAME --
         self.message = ctk.CTkLabel(self, text="")
         self.message.pack(side='bottom')
 
@@ -64,7 +79,7 @@ class BrickSorter(ctk.CTk):
             part_img_url, part_number, part_name, part_url = rebrickable_api(self.search_entry.get())
             image = create_part_image(part_img_url)
 
-            self.part_image_lbl.configure(image=image)
+            self.part_img_lbl.configure(image=image)
             self.part_number_lbl.configure(text=part_number)
             self.part_name_lbl.configure(text=part_name)
             self.part_url_btn.configure(text="Bricklink", font=('Any', 12, 'underline'),
