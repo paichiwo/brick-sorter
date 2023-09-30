@@ -87,9 +87,9 @@ class BrickSorter(ctk.CTk):
         self.part_url_btn = ctk.CTkButton(self.frame_sr, text="", fg_color='transparent', width=50)
 
         self.part_img_lbl.grid(row=0, column=0, rowspan=3, padx=10)
-        self.part_number_lbl.grid(row=0, column=1, padx=10)
+        self.part_number_lbl.grid(row=0, column=1, padx=10, pady=10)
         self.part_name_lbl.grid(row=1, column=1, padx=10)
-        self.part_url_btn.grid(row=2, column=1, padx=10)
+        self.part_url_btn.grid(row=2, column=1, padx=10, pady=10)
 
         # -- DB SEARCH RESULT FRAME --
         self.table = CTkTableView(self, values=[], height=180)
@@ -100,6 +100,7 @@ class BrickSorter(ctk.CTk):
 
     def search_part(self):
         try:
+            self.table.clear()
             part_img_url, part_number, part_name, part_url = rebrickable_api(self.search_entry.get())
             image = create_part_image(part_img_url)
 
