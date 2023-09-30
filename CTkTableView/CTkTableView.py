@@ -54,6 +54,7 @@ class Frame(ctk.CTkFrame):
 
         self.selected_frame = None
         self.bind("<Button-1>", self.select)
+        self.bind("<Button-3>", self.deselect)
 
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -78,6 +79,9 @@ class Frame(ctk.CTkFrame):
         # Select the clicked frame
         self.configure(fg_color="#d7263d")
 
+    def deselect(self, event):
+        for frame in self.master.frames:
+            frame.configure(fg_color="#02182b")
+
     def get_values(self):
         return self.part_number, self.part_name, self.color, self.amount, self.box
-
