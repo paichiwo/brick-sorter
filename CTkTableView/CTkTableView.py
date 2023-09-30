@@ -22,6 +22,21 @@ class CTkTableView(ctk.CTkScrollableFrame):
             frame.pack(fill='both', ipady=10, pady=5)
             self.frames.append(frame)
 
+    def get_values(self):
+        """Returns the values of the selected frame, or None if no frame is selected."""
+        selected_frame = self.get_selected_frame()
+        if selected_frame is not None:
+            return selected_frame.get_values()
+        else:
+            return None
+
+    def get_selected_frame(self):
+        """Returns the selected frame, or None if no frame is selected."""
+        for frame in self.frames:
+            if frame.cget("fg_color") == "#d7263d":
+                return frame
+        return None
+
     def update_view(self):
         self.clear()
         self.insert_rows(self.values)
@@ -36,6 +51,9 @@ class Frame(ctk.CTkFrame):
         self.color = color
         self.amount = amount
         self.box = box
+
+        self.selected_frame = None
+        self.bind("<Button-1>", self.select)
 
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -52,4 +70,14 @@ class Frame(ctk.CTkFrame):
         self.part_color_lbl.grid(row=1, column=0, sticky='w', padx=10)
         self.part_amount_lbl.grid(row=1, column=1, padx=10)
         self.part_box_lbl.grid(row=1, column=2, sticky='e', padx=10)
+
+    def select(self, event):
+        # Deselect all frames first
+        for frame in self.master.frames:
+            frame.configure(fg_color="#02182b")
+        # Select the clicked frame
+        self.configure(fg_color="#d7263d")
+
+    def get_values(self):
+        return self.part_number, self.part_name, self.color, self.amount, self.box
 
