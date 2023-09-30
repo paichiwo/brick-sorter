@@ -63,7 +63,7 @@ class BrickSorter(ctk.CTk):
         self.amount = ctk.CTkEntry(self.frame_ui, placeholder_text="Amount", width=50)
         self.box_entry = ctk.CTkEntry(self.frame_ui, placeholder_text="Box", width=50)
         self.add_btn = ctk.CTkButton(self.frame_ui, text="Add", command=self.add_part)
-        self.del_btn = ctk.CTkButton(self.frame_ui, text="Delete")
+        self.del_btn = ctk.CTkButton(self.frame_ui, text="Delete", command=self.delete_part)
 
         self.color.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="we")
         self.amount.grid(row=0, column=2, padx=10, sticky="we")
@@ -139,4 +139,4 @@ class BrickSorter(ctk.CTk):
             self.message.configure(text="Please enter all of the values")
 
     def delete_part(self):
-        pass
+        print(self.table.get_values())
