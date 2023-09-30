@@ -1,7 +1,8 @@
 BEGIN TRANSACTION;
 
 CREATE TABLE Inventory (
-    part_number VARCHAR(50) PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    part_number VARCHAR(50),
     part_name VARCHAR(150),
     color VARCHAR(50),
     amount INTEGER,
