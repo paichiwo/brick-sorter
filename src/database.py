@@ -27,6 +27,11 @@ class Database:
             result = [[row['part_number'], row['part_name'], row['color'], row['amount'], row['box']] for row in rows]
             return result
 
+    def check_existing(self, part_number, part_color):
+        query = "SELECT * FROM Inventory WHERE part_number = ? AND color = ?"
+        self.cur.execute(query, (part_number, part_color))
+        return self.cur.fetchone()
+
     def insert_part(self, part_number, part_name, part_color, part_amount, part_box):
         query = "INSERT INTO Inventory (part_number, part_name, color, amount, box) VALUES (?, ?, ?, ?, ?)"
         self.cur.execute(query, (part_number, part_name, part_color, part_amount, part_box))
