@@ -5,6 +5,7 @@ import requests
 import customtkinter as ctk
 from PIL import Image
 from CTkScrollableDropdown import CTkScrollableDropdown
+from CTkTableView import CTkTableView
 from src.helpers import rebrickable_api, create_part_image, read_lego_colors
 from src.database import Database
 
@@ -20,7 +21,7 @@ class BrickSorter(ctk.CTk):
 
         # -- WINDOW SETUP --
         self.title("Brick Sorter v0.01")
-        self.geometry("400x600")
+        self.geometry("440x260")
         self.configure(fg_color=("#BBBBBB", "#02182b"))
         self.resizable(False, False)
         ctk.set_default_color_theme("data/brick_sorter_theme.json")
@@ -71,7 +72,7 @@ class BrickSorter(ctk.CTk):
         self.del_btn.grid(row=1, column=2, columnspan=2, padx=10, sticky="we")
 
         # -- SEARCH RESULT FRAME
-        self.frame_sr = ctk.CTkFrame(self, fg_color="transparent")
+        self.frame_sr = ctk.CTkFrame(self, fg_color="transparent", height=120)
         self.frame_sr.pack(fill='x', padx=10)
         self.frame_sr.columnconfigure(0, weight=1)
         self.frame_sr.columnconfigure(1, weight=1)
@@ -80,7 +81,7 @@ class BrickSorter(ctk.CTk):
         self.frame_sr.rowconfigure(2, weight=1)
 
         self.part_img = ctk.CTkImage(Image.open('img/placeholder.png'))
-        self.part_img_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.part_img, width=100, height=120)
+        self.part_img_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.part_img, width=100, height=100)
         self.part_number_lbl = ctk.CTkLabel(self.frame_sr, textvariable=self.part_nb)
         self.part_name_lbl = ctk.CTkLabel(self.frame_sr, textvariable=self.part_nm)
         self.part_url_btn = ctk.CTkButton(self.frame_sr, text="", fg_color='transparent', width=50)
@@ -89,6 +90,9 @@ class BrickSorter(ctk.CTk):
         self.part_number_lbl.grid(row=0, column=1, padx=10)
         self.part_name_lbl.grid(row=1, column=1, padx=10)
         self.part_url_btn.grid(row=2, column=1, padx=10)
+
+        # -- DB SEARCH RESULT FRAME --
+        self.table = CTkTableView(self, values=[], height=180)
 
         # -- MESSAGE ELEMENT --
         self.message = ctk.CTkLabel(self, text="")
@@ -99,6 +103,7 @@ class BrickSorter(ctk.CTk):
             part_img_url, part_number, part_name, part_url = rebrickable_api(self.search_entry.get())
             image = create_part_image(part_img_url)
 
+            self.geometry("440x600")
             self.frame_sr.configure(fg_color="#021f37")
 
             self.part_img_lbl.configure(image=image)
@@ -106,7 +111,11 @@ class BrickSorter(ctk.CTk):
             self.part_nm.set(part_name)
             self.part_url_btn.configure(text="Bricklink",
                                         command=lambda: webbrowser.open(part_url))
-            self.db.search_part(part_number)  # print part details
+            search_result = self.db.search_part(part_number)
+            if search_result:
+                self.table.insert_rows(search_result)
+                self.table.pack(fill='x', padx=10, pady=10)
+
         except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError):
             self.message.configure(text="Connection Error")
         except KeyError:
