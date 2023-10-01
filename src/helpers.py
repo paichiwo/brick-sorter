@@ -33,3 +33,11 @@ def read_lego_colors():
     with open("data/lego_colors.json", "r") as json_file:
         data_dict = json.load(json_file)
         return data_dict['lego_colors']
+
+
+def part_name_shortener(part_name):
+    if len(part_name) > 45:
+        text = part_name[:45].split(" ")
+        return " ".join(text[:-1])
+    else:
+        return part_name
