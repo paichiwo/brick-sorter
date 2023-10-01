@@ -1,11 +1,12 @@
 from src.database import Database
-from src.brick_sorter import BrickSorter
+from src.brick_sorter import BrickSorterApp
 
 
 def main():
     db = Database()
+
     db.create_db()
-    BrickSorter().mainloop()
+    BrickSorterApp().run()
     db.close_db()
 
 

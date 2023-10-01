@@ -6,12 +6,15 @@ from src.database import Database
 from src.helpers import rebrickable_api, create_part_image, part_name_shortener
 
 
-class BrickSorter(Gui):
+class BrickSorterApp(Gui):
     """Logic for the Brick Sorter"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db = Database()
+
+    def run(self):
+        self.mainloop()
 
     def update_table(self, part_number, pack=False):
         self.table.clear()
