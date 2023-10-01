@@ -7,11 +7,15 @@ from src.helpers import rebrickable_api, create_part_image
 
 
 class BrickSorter(Gui):
+    """Logic for the Brick Sorter"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db = Database()
 
     def search_part(self):
+        """Search part online and in the database and display results"""
+
         try:
             part_img_url, part_number, part_name, part_url = rebrickable_api(self.search_entry.get())
             if part_img_url and part_number and part_name and part_url:
@@ -41,6 +45,8 @@ class BrickSorter(Gui):
             self.message.configure(text="Part doesn't exist")
 
     def add_part(self):
+        """Add part to the database"""
+
         part_number = self.part_nb.get()
         part_name = self.part_nm.get()
         part_color = self.color.get()
