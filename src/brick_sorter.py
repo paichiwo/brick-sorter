@@ -13,9 +13,11 @@ class BrickSorter(Gui):
         super().__init__(*args, **kwargs)
         self.db = Database()
 
-    def update_table(self, part_number):
+    def update_table(self, part_number, pack=False):
+        self.table.clear()
         if self.db.search_part(part_number):
             self.table.insert_rows(self.db.search_part(part_number))
+        if pack:
             self.table.pack(fill='x', padx=10, pady=10)
 
     def search_part(self):
@@ -33,7 +35,7 @@ class BrickSorter(Gui):
                 self.part_nm.set(part_name)
                 self.part_name_lbl.configure(text=part_name_shortener(part_name))
                 self.part_url_btn.configure(text="Bricklink", command=lambda: webbrowser.open(part_url))
-                self.update_table(part_number)
+                self.update_table(part_number, pack=True)
         except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError):
             self.message.configure(text="Connection Error")
         except KeyError:
@@ -50,11 +52,11 @@ class BrickSorter(Gui):
         if all([part_number and part_name and part_color and part_amount and part_box]):
             try:
                 self.handle_add_part(part_number, part_name, part_color, part_amount, part_box)
+                self.update_table(part_number)
             except sqlite3.Error as e:
                 self.message.configure(text=f"Error inserting part: {e}")
         else:
             self.message.configure(text="Please enter all of the values")
-        self.update_table(part_number)
 
     def handle_add_part(self, part_number, part_name, part_color, part_amount, part_box):
         if not self.db.check_existing(part_number, part_color):
@@ -68,9 +70,9 @@ class BrickSorter(Gui):
         if values:
             try:
                 self.handle_delete_part(values["part_number"], values["part_color"])
+                self.update_table(values["part_number"])
             except sqlite3.Error as e:
                 self.message.configure(text=f"Error deleting part: {e}")
-        self.update_table(values["part_number"])
 
     def handle_delete_part(self, part_number, part_color):
         check_deleted = self.db.delete_part(part_number, part_color)
