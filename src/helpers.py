@@ -1,7 +1,6 @@
 import io
 import json
 import requests
-from rembg import remove
 from PIL import Image, ImageTk
 from urllib.request import urlopen
 
@@ -27,8 +26,7 @@ def create_part_image(link):
     url_image.close()
     image = Image.open(io.BytesIO(raw_data))
     resized_image = image.resize((100, 100))
-    final_image = remove(resized_image)
-    return ImageTk.PhotoImage(final_image)
+    return ImageTk.PhotoImage(resized_image)
 
 
 def read_lego_colors():
