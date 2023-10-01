@@ -64,4 +64,19 @@ class BrickSorter(Gui):
             self.message.configure(text="Please enter all of the values")
 
     def delete_part(self):
-        print(self.table.get_values())
+        values = self.table.get_values()
+        if values:
+            try:
+                check_deleted = self.db.delete_part(values["part_number"], values["part_color"])
+                if check_deleted == 0:
+                    self.message.configure(text="No matching part found")
+                elif check_deleted == 1:
+                    self.message.configure(text="Part deleted successfully")
+                else:
+                    self.message.configure(text=f"Unexpected number of rows deleted: {check_deleted}")
+            except sqlite3.Error as e:
+                self.message.configure(text="Error deleting part")
+        search_result = self.db.search_part(values['part_number'])
+        if search_result:
+            self.table.insert_rows(search_result)
+
