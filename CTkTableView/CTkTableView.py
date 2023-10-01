@@ -84,4 +84,8 @@ class Frame(ctk.CTkFrame):
             frame.configure(fg_color="#02182b")
 
     def get_values(self):
-        return self.part_number, self.part_name, self.color, self.amount, self.box
+        return {"part_number": self.part_number,
+                "part_name": self.part_name,
+                "part_color": self.color,
+                "part_amount": self.amount,
+                "part_box": self.box}
