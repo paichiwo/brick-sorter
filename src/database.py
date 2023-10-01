@@ -38,3 +38,10 @@ class Database:
         query = "INSERT INTO Inventory (part_number, part_name, color, amount, box) VALUES (?, ?, ?, ?, ?)"
         self.cur.execute(query, (part_number, part_name, part_color, part_amount, part_box))
         self.con.commit()
+
+    def delete_part(self, part_number, part_color):
+        query = "DELETE FROM Inventory WHERE part_number = ? AND color = ?"
+        self.cur.execute(query, (part_number, part_color))
+        self.con.commit()
+        deleted_rows = self.cur.rowcount
+        return deleted_rows
