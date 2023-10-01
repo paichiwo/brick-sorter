@@ -11,11 +11,13 @@ class CTkTableView(ctk.CTkScrollableFrame):
         self.update_view()
 
     def clear(self):
+        """Clear all the frames"""
         for frame in self.frames:
             frame.destroy()
         self.frames = []
 
     def insert_rows(self, data):
+        """Insert data into the table"""
         self.clear()
         for item in data:
             frame = Frame(self, *item, fg_color="#02182b", height=50)
@@ -73,6 +75,7 @@ class Frame(ctk.CTkFrame):
         self.part_box_lbl.grid(row=1, column=2, sticky='e', padx=10)
 
     def select(self, event):
+        """Action when frame selected - left mouse button"""
         # Deselect all frames first
         for frame in self.master.frames:
             frame.configure(fg_color="#02182b")
@@ -80,10 +83,12 @@ class Frame(ctk.CTkFrame):
         self.configure(fg_color="#d7263d")
 
     def deselect(self, event):
+        """Action when frame deselected - right mouse button"""
         for frame in self.master.frames:
             frame.configure(fg_color="#02182b")
 
     def get_values(self):
+        """Return values of selected frame"""
         return {"part_number": self.part_number,
                 "part_name": self.part_name,
                 "part_color": self.color,

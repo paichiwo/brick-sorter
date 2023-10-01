@@ -14,9 +14,11 @@ class BrickSorterApp(Gui):
         self.db = Database()
 
     def run(self):
+        """Run the app"""
         self.mainloop()
 
     def update_table(self, part_number, pack=False):
+        """Update the table"""
         self.table.clear()
         if self.db.search_part(part_number):
             self.table.insert_rows(self.db.search_part(part_number))
@@ -69,6 +71,7 @@ class BrickSorterApp(Gui):
             self.message.configure(text=f"Part: {part_number} with color: {part_color} exists in the database")
 
     def delete_part(self):
+        """Delete part from the database"""
         values = self.table.get_values()
         if values:
             try:

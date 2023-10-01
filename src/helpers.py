@@ -30,12 +30,14 @@ def create_part_image(link):
 
 
 def read_lego_colors():
+    """Read data from json"""
     with open("data/lego_colors.json", "r") as json_file:
         data_dict = json.load(json_file)
         return data_dict['lego_colors']
 
 
 def part_name_shortener(part_name):
+    """Return shorter name if len > 45"""
     if len(part_name) > 45:
         text = part_name[:45].split(" ")
         return " ".join(text[:-1])
