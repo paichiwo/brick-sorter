@@ -7,6 +7,7 @@ from src.helpers import read_lego_colors
 
 
 class Gui(ctk.CTk):
+    """This class contains all the UI elements for the Brick Sorter"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
