@@ -2,6 +2,8 @@ import sqlite3
 
 
 class Database:
+    """This class communicates with SQLite database"""
+
     def __init__(self):
         self.con = sqlite3.connect('db/inventory.db')
         self.cur = self.con.cursor()

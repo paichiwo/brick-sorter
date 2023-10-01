@@ -15,7 +15,6 @@ class BrickSorter(Gui):
 
     def search_part(self):
         """Search part online and in the database and display results"""
-
         try:
             part_img_url, part_number, part_name, part_url = rebrickable_api(self.search_entry.get())
             if part_img_url and part_number and part_name and part_url:
@@ -46,7 +45,6 @@ class BrickSorter(Gui):
 
     def add_part(self):
         """Add part to the database"""
-
         part_number = self.part_nb.get()
         part_name = self.part_nm.get()
         part_color = self.color.get()
