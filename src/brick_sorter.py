@@ -15,14 +15,19 @@ class BrickSorter(Gui):
         try:
             part_img_url, part_number, part_name, part_url = rebrickable_api(self.search_entry.get())
             if part_img_url and part_number and part_name and part_url:
-                self.geometry("440x600")
-                self.frame_sr.configure(fg_color="#021f37")
+                self.geometry("450x600")
                 self.frame_sr.pack(fill='x', padx=10)
                 self.message.configure(text="")
+                self.table.clear()
 
                 self.part_img_lbl.configure(image=create_part_image(part_img_url))
                 self.part_nb.set(part_number)
                 self.part_nm.set(part_name)
+                if len(part_name) > 45:
+                    text = part_name[:45].split(" ")
+                    self.part_name_lbl.configure(text=" ".join(text[:-1]))
+                else:
+                    self.part_name_lbl.configure(text=part_name)
                 self.part_url_btn.configure(text="Bricklink", command=lambda: webbrowser.open(part_url))
 
                 search_result = self.db.search_part(part_number)
@@ -42,10 +47,9 @@ class BrickSorter(Gui):
         part_amount = self.amount.get()
         part_box = self.box_entry.get().upper()
 
-        if part_number and part_name and part_color and part_amount and part_box:
+        if all([part_number and part_name and part_color and part_amount and part_box]):
             try:
-                part_exists = self.db.check_existing(part_number, part_color)
-                if not part_exists:
+                if not self.db.check_existing(part_number, part_color):
                     self.db.insert_part(part_number, part_name, part_color, part_amount, part_box)
                     self.message.configure(text="Part inserted successfully")
                 else:
