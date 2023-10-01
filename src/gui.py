@@ -15,9 +15,8 @@ class Gui(ctk.CTk):
 
         # -- WINDOW SETUP --
         self.title("Brick Sorter v0.01")
-        self.geometry("440x250")
+        self.geometry("450x250")
         self.configure(fg_color=("#BBBBBB", "#02182b"))
-        self.resizable(False, False)
         ctk.set_default_color_theme("data/brick_sorter_theme.json")
 
         # -- LOGO --
@@ -76,10 +75,10 @@ class Gui(ctk.CTk):
         self.part_img = ctk.CTkImage(Image.open('img/placeholder.png'))
         self.part_img_lbl = ctk.CTkLabel(self.frame_sr, text="", image=self.part_img, width=100, height=100)
         self.part_number_lbl = ctk.CTkLabel(self.frame_sr, textvariable=self.part_nb)
-        self.part_name_lbl = ctk.CTkLabel(self.frame_sr, textvariable=self.part_nm)
+        self.part_name_lbl = ctk.CTkLabel(self.frame_sr, text="")
         self.part_url_btn = ctk.CTkButton(self.frame_sr, text="", fg_color='transparent', width=50)
 
-        self.part_img_lbl.grid(row=0, column=0, rowspan=3, padx=10)
+        self.part_img_lbl.grid(row=0, column=0, rowspan=3, padx=20, sticky='w')
         self.part_number_lbl.grid(row=0, column=1, padx=10, pady=10)
         self.part_name_lbl.grid(row=1, column=1, padx=10)
         self.part_url_btn.grid(row=2, column=1, padx=10, pady=10)
